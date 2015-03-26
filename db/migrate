@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sequel -m ./migrations/ mysql2://root@localhost/test
