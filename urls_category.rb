@@ -3,7 +3,7 @@ require 'sequel'
 require 'mysql2'
 require 'nokogiri'
 require 'open-uri'
-#fetching the HTML code
+#fetching HTML code
 doc = Nokogiri::HTML(open('http://www.catalog.onliner.by'))
 #collecting URLs in an array
 xrequest="//table[@class='fphotblock add_line_main_menu']//div/a[1]/@href"
