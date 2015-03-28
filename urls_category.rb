@@ -5,13 +5,13 @@ require 'nokogiri'
 require 'open-uri'
 #fetching the HTML code
 doc = Nokogiri::HTML(open('http://www.catalog.onliner.by'))
-#collecting URLs in the array
+#collecting URLs in an array
 xrequest="//table[@class='fphotblock add_line_main_menu']//div/a[1]/@href"
 urls = doc.xpath(xrequest).map{ |link| link.value }.uniq
-#connecting to the MySQL database
+#connecting to a MySQL database
 DB=Sequel.connect(:adapter=>'mysql2', :user=>'root', :host=>'localhost', :database=>'test')
 #creating model
 class Url < Sequel::Model
 end
-#inserting URLs into the MySQL table
+#inserting the URLs into the MySQL table
 urls.map { |url| Url.create(:url=>url) }
