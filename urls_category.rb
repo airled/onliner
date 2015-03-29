@@ -12,7 +12,8 @@ xrequest="//table[@class='fphotblock add_line_main_menu']//div/a[1]/@href"
 urls = doc.xpath(xrequest).map{ |link| link.value }.uniq
 
 #connecting to a MySQL database
-DB=Sequel.connect(:adapter=>'mysql2', :user=>'root', :host=>'localhost', :database=>'test')
+auth={:adapter=>'mysql2',:user=>'root',:password=>'',:host=>'localhost',:database=>'test'}
+DB=Sequel.connect(auth)
 
 #creating a model
 class Url < Sequel::Model
