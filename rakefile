@@ -1,8 +1,8 @@
 namespace :db do
   #require "sequel"
   #require "yaml"
-  #require 'logger'
-  require './config/db_init.rb'
+  #require "logger"
+  require "./config/db_init.rb"
   Sequel.extension :migration
 
   #DB.loggers << Logger.new($stdout)
