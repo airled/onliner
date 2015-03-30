@@ -6,6 +6,7 @@ Sequel.migration do
       String :name
       String :name_ru
       TrueClass :is_new
+      #default_character_set utf8
     end
   end
   down do

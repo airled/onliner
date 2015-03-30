@@ -18,10 +18,8 @@ xcategories = "//table[@class='fphotblock add_line_main_menu']//div[@class='i']"
 categories = html.xpath(xcategories).map do |node|
   url = node.xpath("./a[1]/@href").text
   name = node.xpath("./a[last()]").text
-  isnew = if node.xpath("./a[2]/img/@class='img_new'")
-    true || false
-  end
-  {:name=>name, :url=>url, :is_new=>isnew}
+  is_new = node.xpath("./a[2]/img[@class='img_new']").any?
+  {:name=>name, :url=>url, :is_new=>is_new}
 end
 
 #connecting to a MySQL database
