@@ -1,5 +1,0 @@
-adapter: mysql2
-user: root
-password: 
-host: localhost
-database: test
