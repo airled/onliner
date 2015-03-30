@@ -1,6 +1,6 @@
+require './config/init'
 require 'nokogiri'
 require 'open-uri'
-require './config/db'
 #require 'logger'
 
 #DB.loggers << Logger.new($stdout)
