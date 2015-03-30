@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'open-uri'
 #require 'yaml'
 #require 'logger'
-require 'config/db_init'
+require 'config/db'
 
 #DB.loggers << Logger.new($stdout)
 
