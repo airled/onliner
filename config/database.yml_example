@@ -1,0 +1,6 @@
+#This is example config file. After insert you config you should rename it
+#adapter: adapter
+#user: user
+#password: password
+#host: host
+#database: database
