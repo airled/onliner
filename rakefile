@@ -2,7 +2,7 @@ namespace :db do
   #require "sequel"
   #require "yaml"
   #require "logger"
-  require "./config/db_init.rb"
+  require "config/db_init"
   Sequel.extension :migration
 
   #DB.loggers << Logger.new($stdout)
