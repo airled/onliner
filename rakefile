@@ -1,10 +1,10 @@
 namespace :db do
-  require "sequel"
-  require "yaml"
+  #require "sequel"
+  #require "yaml"
   #require 'logger'
+  require './config/db_init.rb'
   Sequel.extension :migration
-  hash = YAML.load_file('database.yml')
-  DB = Sequel.connect(hash)
+
   #DB.loggers << Logger.new($stdout)
   
   desc "Prints current schema version"

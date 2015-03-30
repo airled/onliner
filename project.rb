@@ -1,9 +1,12 @@
-require 'sequel'
-require 'mysql2'
+#require 'sequel'
+#require 'mysql2'
 require 'nokogiri'
 require 'open-uri'
-require 'yaml'
+#require 'yaml'
 #require 'logger'
+require 'config/db_init.rb'
+
+#DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
 html = Nokogiri::HTML(open('http://www.catalog.onliner.by'))
@@ -22,10 +25,6 @@ categories = html.xpath(xcategories).map do |node|
   is_new = node.xpath("./a[2]/img[@class='img_new']").any?
   {:name=>name, :url=>url, :is_new=>is_new}
 end
-
-#connecting to a MySQL database
-hash = YAML.load_file('database.yml')
-DB = Sequel.connect(hash)
 
 #creating a model
 class Group < Sequel::Model
