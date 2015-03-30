@@ -22,17 +22,8 @@ categories = html.xpath(xcategories).map do |node|
   is_new = node.xpath("./a[2]/img[@class='img_new']").any?
   {:name=>name, :url=>url, :is_new=>is_new}
 end
-=begin
+
 #connecting to a MySQL database
-file = File.open("#{Dir.pwd}/config")
-values = []
-file.each_line { |line| values.push line.chomp }
-file.close
-parameters = [:adapter,:user,:password,:host,:database]
-connect_parameters = Hash[parameters.zip(values)]
-DB = Sequel.connect(connect_parameters)
-#DB.loggers << Logger.new($stdout)
-=end
 hash = YAML.load_file('database.yml')
 DB = Sequel.connect(hash)
 #creating a model
