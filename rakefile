@@ -1,8 +1,6 @@
 namespace :db do
-  #require "sequel"
-  #require "yaml"
+  require "./config/db"
   #require "logger"
-  require_relative "config/db"
   Sequel.extension :migration
 
   #DB.loggers << Logger.new($stdout)

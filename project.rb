@@ -1,10 +1,7 @@
-#require 'sequel'
-#require 'mysql2'
 require 'nokogiri'
 require 'open-uri'
-#require 'yaml'
+require './config/db'
 #require 'logger'
-require 'config/db'
 
 #DB.loggers << Logger.new($stdout)
 
