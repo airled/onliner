@@ -3,8 +3,13 @@ namespace :db do
   require "yaml"
   #require 'logger'
   Sequel.extension :migration
-  hash = YAML.load_file('database.yml')
-  DB = Sequel.connect(hash)
+  file = File.open("#{Dir.pwd}/config")
+  values = []
+  file.each_line { |line| values.push line.chomp }
+  file.close
+  parameters = [:adapter,:user,:password,:host,:database]
+  connect_parameters = Hash[parameters.zip(values)]
+  DB = Sequel.connect(connect_parameters)
   #DB.loggers << Logger.new($stdout)
   
   desc "Prints current schema version"

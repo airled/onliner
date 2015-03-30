@@ -1,15 +1,16 @@
-require 'nokogiri'
-require 'open-uri'
+require 'sequel'
+require 'mysql2'
+require 'yaml'
+#require 'logger'
 
-page = Nokogiri::HTML(open('http://www.catalog.onliner.by'))
-page_file=File.open('/home/air/Desktop/1.txt','w')
-page_file.puts page
-
-xcategory = "//table[@class='fphotblock add_line_main_menu']//div[@class='i']"
-category = page.xpath(xcategory).map do |node|
-  url = node.xpath("./a[1]/@href").text
-  name = node.xpath("./a[last()]").text
-  {:name=>name, :url=>url}
-end
-
-puts category
+=begin
+#connecting to a MySQL database
+file = File.open("#{Dir.pwd}/config")
+values = []
+file.each_line { |line| values.push line.chomp }
+file.close
+parameters = [:adapter,:user,:password,:host,:database]
+connect_parameters = Hash[parameters.zip(values)]
+DB = Sequel.connect(connect_parameters)
+#DB.loggers << Logger.new($stdout)
+=end

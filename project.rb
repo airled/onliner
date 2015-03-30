@@ -2,6 +2,7 @@ require 'sequel'
 require 'mysql2'
 require 'nokogiri'
 require 'open-uri'
+require 'yaml'
 #require 'logger'
 
 #fetching HTML code
