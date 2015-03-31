@@ -1,4 +1,4 @@
-require './init'
+require './init_db'
 require 'nokogiri'
 require 'open-uri'
 #require 'logger'

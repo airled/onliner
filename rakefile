@@ -1,4 +1,4 @@
-require "./init"
+require "./init_db"
 Sequel.extension :migration
   
 desc "Prints current schema version"
