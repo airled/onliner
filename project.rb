@@ -42,12 +42,12 @@ groups.map { |name| Group.create(:name_ru => name) }
 #inserting category values
 categories.map { |hash| Category.create(hash) }
 
-gcount=1
-ccount=1
+groups_count=1
+categories_count=1
 html.xpath("//ul[@class='b-catalogitems']").map do |group_node|
-    group_node.xpath("./li").map do |category_node|
-      GroupCategory.create(:group_id => gcount,:category_id => ccount)
-      ccount+=1
+  group_node.xpath("./li").map do |category_node|
+    GroupCategory.create(:group_id => groups_count,:category_id => categories_count)
+      categories_count+=1
     end
-gcount+=1
+  groups_count+=1
 end
