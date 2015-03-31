@@ -1,12 +1,12 @@
 Sequel.migration do
   up do
-    create_table :groups_categories do
+    create_table :categories_groups do
       primary_key :id
-      foreign_key :group_id, key: :id, :groups
-      foreign_key :category_id, key: :id, :categories
+      Integer :group_id
+      Integer :category_id
     end
   end
   down do
-    drop_table(:groups_categories)
+    drop_table(:categories_groups)
   end
 end   

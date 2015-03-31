@@ -33,7 +33,7 @@ class Category < Sequel::Model
 end
 class Product < Sequel::Model
 end
-class GroupCategory < Sequel::Model(:groups_categories)
+class GroupCategory < Sequel::Model(:categories_groups)
 end
 
 #inserting names of the groups
