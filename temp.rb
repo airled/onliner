@@ -22,22 +22,23 @@ Group.create({ name_ru: name })
 end
  
 class Group < Sequel::Model
- # many_to_many :categories
- # one_through_one :category
+  many_to_many :categories
 end
 class Category < Sequel::Model
+  many_to_many :groups
 end
 class Product < Sequel::Model
 end
 class GroupCategory < Sequel::Model(:groups_categories)
 end
+
 groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
  
 groups.zip(categories_blocks).map do |group_node, categories_block|
-  group = create_group(group_node)
-  categories_block.map do |category_node|
-    category = create_category(category_node)
-    group.add_category(category)
-  end
+group = create_group(group_node)
+categories_block.xpath("./li").map do |category_node|
+category = create_category(category_node)
+group.add_category(category)
+end
 end 
