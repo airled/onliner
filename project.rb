@@ -26,18 +26,29 @@ end
 
 #creating a model
 class Group < Sequel::Model
-  many_to_many :categories
-  one_through_one :category
+ # many_to_many :categories
+ # one_through_one :category
 end
 class Category < Sequel::Model
 end
 class Product < Sequel::Model
 end
-
+class Complex < Sequel::Model[:groups_categories]
+end
 #inserting names of the groups
 groups.map { |name| Group.create(:name_ru => name) }
 
 #inserting category values
 categories.map { |hash| Category.create(hash) }
 
-#0.upto(groups.size) {|i| DB[:groups_categories].insert(:group_id=>i)}
+#dataset=DB[:groups_categories]
+gcount=1
+ccount=1
+html.xpath("//ul[@class='b-catalogitems']").map do |group_node|
+    group_node.xpath("./li").map do |category_node|
+      #dataset.insert(:group_id=>gcount,:category_id=>ccount)
+      Complex.create(:group_id=>gcount,:category_id=>ccount)
+      ccount+=1
+    end
+gcount+=1
+end
