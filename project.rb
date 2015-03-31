@@ -18,9 +18,10 @@ groups = html.xpath(xgroups).map{ |node| node.text.delete("0-9") }
 xcategories = "//table[@class='fphotblock add_line_main_menu']//div[@class='i']"
 categories = html.xpath(xcategories).map do |node|
   url = node.xpath("./a[1]/@href").text
+  name = url.sub("http://catalog.onliner.by/","").delete('/')
   name_ru = node.xpath("./a[last()]").text
   is_new = node.xpath("./a[2]/img[@class='img_new']").any?
-  {:name_ru=>name_ru, :url=>url, :is_new=>is_new}
+  {:name=>name, :name_ru=>name_ru, :url=>url, :is_new=>is_new}
 end
 
 #creating a model
@@ -38,3 +39,5 @@ groups.map { |name| Group.create(:name_ru => name) }
 
 #inserting category values
 categories.map { |hash| Category.create(hash) }
+
+#0.upto(groups.size) {|i| DB[:groups_categories].insert(:group_id=>i)}
