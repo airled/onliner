@@ -42,12 +42,14 @@ groups.map { |name| Group.create(:name_ru => name) }
 #inserting category values
 categories.map { |hash| Category.create(hash) }
 
+#inserting in the common table
 groups_count=1
 categories_count=1
 html.xpath("//ul[@class='b-catalogitems']").map do |group_node|
   group_node.xpath("./li").map do |category_node|
-    GroupCategory.create(:group_id => groups_count,:category_id => categories_count)
-      categories_count+=1
-    end
+    common_count={:group_id => groups_count, :category_id => categories_count}
+    GroupCategory.create(common_count)
+    categories_count+=1
+  end
   groups_count+=1
 end
