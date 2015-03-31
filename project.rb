@@ -21,7 +21,7 @@ categories = html.xpath(xcategories).map do |node|
   name = url.sub("http://catalog.onliner.by/","").delete('/')
   name_ru = node.xpath("./a[last()]").text
   is_new = node.xpath("./a[2]/img[@class='img_new']").any?
-  {:name=>name, :name_ru=>name_ru, :url=>url, :is_new=>is_new}
+  {:name => name, :name_ru => name_ru, :url => url, :is_new => is_new}
 end
 
 #creating a model
@@ -33,21 +33,20 @@ class Category < Sequel::Model
 end
 class Product < Sequel::Model
 end
-class Complex < Sequel::Model[:groups_categories]
+class GroupCategory < Sequel::Model(:groups_categories)
 end
+
 #inserting names of the groups
 groups.map { |name| Group.create(:name_ru => name) }
 
 #inserting category values
 categories.map { |hash| Category.create(hash) }
 
-#dataset=DB[:groups_categories]
 gcount=1
 ccount=1
 html.xpath("//ul[@class='b-catalogitems']").map do |group_node|
     group_node.xpath("./li").map do |category_node|
-      #dataset.insert(:group_id=>gcount,:category_id=>ccount)
-      Complex.create(:group_id=>gcount,:category_id=>ccount)
+      GroupCategory.create(:group_id => gcount,:category_id => ccount)
       ccount+=1
     end
 gcount+=1
