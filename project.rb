@@ -2,7 +2,7 @@ require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
-#require 'logger'
+require 'logger'
 #DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
@@ -27,7 +27,7 @@ groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 groups.zip(categories_blocks).map do |group_node, categories_block|
   group = create_group(group_node)
-  categories_block.xpath("./li").map do |category_node|
+  categories_block.xpath("./li/div[@class='i']").map do |category_node|
     category = create_category(category_node)
     group.add_category(category)
   end
