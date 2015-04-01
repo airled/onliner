@@ -33,7 +33,6 @@ class GroupCategory < Sequel::Model(:groups_categories)
 end
 
 groups = html.xpath("//h1[@class='cm__h1']")
-puts groups
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 
 groups.zip(categories_blocks).map do |group_node, categories_block|

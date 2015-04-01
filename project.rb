@@ -7,49 +7,38 @@ require 'open-uri'
 
 #fetching HTML code
 html = Nokogiri::HTML(open('http://www.catalog.onliner.by'))
-
-#GROUPS
-#collecting group names in an array
-xgroups = "//h1[@class='cm__h1']"
-groups = html.xpath(xgroups).map{ |node| node.text.delete("0-9") }
-
-#CATEGORIES
-#collecting category URLs in an array
-xcategories = "//table[@class='fphotblock add_line_main_menu']//div[@class='i']"
-categories = html.xpath(xcategories).map do |node|
-  url = node.xpath("./a[1]/@href").text
-  name = url.sub("http://catalog.onliner.by/","").delete('/')
-  name_ru = node.xpath("./a[last()]").text
-  is_new = node.xpath("./a[2]/img[@class='img_new']").any?
-  {:name => name, :name_ru => name_ru, :url => url, :is_new => is_new}
-end
-
-#creating a model
+ 
 class Group < Sequel::Model
- # many_to_many :categories
- # one_through_one :category
+  many_to_many :categories
 end
 class Category < Sequel::Model
+  many_to_many :groups
 end
 class Product < Sequel::Model
 end
-class GroupCategory < Sequel::Model(:categories_groups)
+
+#creating groups in the Groups mysql table
+def create_group(group_node)
+  name = group_node.text.delete("0-9")
+  Group.create({ name_ru: name })
 end
 
-#inserting names of the groups
-groups.map { |name| Group.create(:name_ru => name) }
+#creating categories in the Categories mysql table
+def create_category(category_node)
+  url = category_node.xpath("./a[1]/@href").text
+  name = url.sub("http://catalog.onliner.by/","").delete('/')
+  name_ru = category_node.xpath("./a[last()]").text
+  is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
+  Category.create({ name: name, name_ru: name_ru, url: url, is_new: is_new })
+end
 
-#inserting category values
-categories.map { |hash| Category.create(hash) }
+groups = html.xpath("//h1[@class='cm__h1']")
+categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 
-#inserting in the common table
-groups_count=1
-categories_count=1
-html.xpath("//ul[@class='b-catalogitems']").map do |group_node|
-  group_node.xpath("./li").map do |category_node|
-    common_count={:group_id => groups_count, :category_id => categories_count}
-    GroupCategory.create(common_count)
-    categories_count+=1
+groups.zip(categories_blocks).map do |group_node, categories_block|
+  group = create_group(group_node)
+  categories_block.xpath("./li").map do |category_node|
+    category = create_category(category_node)
+    group.add_category(category)
   end
-  groups_count+=1
-end
+end 
