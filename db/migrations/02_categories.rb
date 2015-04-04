@@ -4,7 +4,7 @@ Sequel.migration do
       primary_key :id
       String :url, :size=>512
       String :name
-      String :name_ru
+      String :name_ru, :size=>20
       TrueClass :is_new
       #default_character_set utf8
     end

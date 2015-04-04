@@ -31,12 +31,28 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
   categories_block.xpath("./li/div[@class='i']").map do |category_node|
     category = create_category(category_node)
     group.add_category(category)
-    html_product = Nokogiri::HTML(open(category_node.xpath("./a[1]/@href").text))
-    html_product.xpath("//tr/td[@class='pdescr']").map do |node|
-      url = node.xpath("./strong/a/@href")
-      name = node.xpath("./strong/a").text.delete("\n")
-      aproduct=Product.create(:url=>url, :name=>name)
-      category.add_product(aproduct)
-    end
+    
+    url_prod = category_node.xpath("./a[1]/@href").text
+    url_prod_const = 'http://catalog.onliner.by/'
+
+    while url_prod do
+
+      html_product = Nokogiri::HTML(open(url_prod))
+      html_product.xpath("//tr/td[@class='pdescr']").map do |prod_node|
+        url = prod_node.xpath("./strong/a/@href")
+        name = prod_node.xpath("./strong/a").text.delete("\n").delete(" ")
+        aproduct=Product.create(:url=>url, :name=>name)
+        category.add_product(aproduct)
+      end
+      html_product.xpath("//a").map do |is_next_node|
+        if is_next_node.text.delete("\n").delete(" ") == "Следующие15позиций"
+          url_prod = url_prod_const + is_next_node.xpath("./@href").to_s
+          break
+        else url_prod = false
+        end
+      end
+
+    end     
+
   end
 end 
