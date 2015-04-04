@@ -46,7 +46,7 @@ end
 groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 
-urls_categories=[]
+#urls_categories=[]
 groups.zip(categories_blocks).map do |group_node, categories_block|
   group = create_group(group_node)
   categories_block.xpath("./li/div[@class='i']").map do |category_node|
