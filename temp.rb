@@ -26,23 +26,17 @@ end
 groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 
-urls_categories=[]
 groups.zip(categories_blocks).map do |group_node, categories_block|
   group = create_group(group_node)
   categories_block.xpath("./li/div[@class='i']").map do |category_node|
     category = create_category(category_node)
     group.add_category(category)
-    urls_categories.push (category_node.xpath("./a[1]/@href").text)#
+    html_product = Nokogiri::HTML(open(category_node.xpath("./a[1]/@href").text))
+    html_product.xpath("//tr/td[@class='pdescr']").map do |node|
+      url = node.xpath("./strong/a/@href")
+      name = node.xpath("./strong/a").text.delete("\n")
+      aproduct=Product.create(:url=>url, :name=>name)
+      category.add_product(aproduct)
+    end
   end
 end 
-
-#Category.map { |line| puts line }
-urls_categories.map do |url|
-  html_product = Nokogiri::HTML(open(url))
-  html_product.xpath("//tr/td[@class='pdescr']").map do |node|
-    url = node.xpath("./strong/a/@href")
-    name = node.xpath("./strong/a").text.delete("\n")
-    aproduct=Product.create(:url=>url, :name=>name)
-    Category.add_product(aproduct)
-  end
-end
