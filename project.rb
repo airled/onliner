@@ -45,7 +45,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
 
     while url_product do
 
-      html_product = Nokogiri::HTML(open(url_prod))
+      html_product = Nokogiri::HTML(open(url_product))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
         product = create_product(product_node)
         category.add_product(product)
