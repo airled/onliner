@@ -51,7 +51,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
         category.add_product(product)
       end
       html_product.xpath("//a").map do |is_next_node|
-        if is_next_node.text.delete("\n").delete(" ") == "Следующие15позиций"
+        if is_next_node.text.include?("Следующие" && "позиций")
           url_product = url_product_const + is_next_node.xpath("./@href").to_s
           break
         else url_product = false
