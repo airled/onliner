@@ -51,7 +51,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
         product = create_product(product_node)
         category.add_product(product)
       end
-      #Checking if there is next product page in the same category
+      #checking if there is a next product page in the same category
       html_product.xpath("//a").map do |is_next_node|
         if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
           url_product = url_product_const + is_next_node.xpath("./@href").to_s
