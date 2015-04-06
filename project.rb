@@ -2,12 +2,11 @@ require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
-require 'logger'
-#DB.loggers << Logger.new($stdout)
+#require 'logger'; DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
-$url_const = "http://catalog.onliner.by"
-html = Nokogiri::HTML(open($url_const))
+url_const = "http://catalog.onliner.by"
+html = Nokogiri::HTML(open(url_const))
  
 #creating groups in Groups table
 def create_group(group_node)
@@ -26,7 +25,7 @@ end
 
 #creating products in Products table
 def create_product(product_node)
-  url = $url_const + product_node.xpath("./strong/a/@href").text
+  url = "http://catalog.onliner.by" + product_node.xpath("./strong/a/@href").text
   name = product_node.xpath("./strong/a").text.delete("\n" " ")
   image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
   Product.create(url: url, name: name, image_url: image_url)
@@ -56,7 +55,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
       #checking if there is a next product page in the same category
       html_product.xpath("//a").map do |is_next_node|
         if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
-          url_product = $url_const + "/" + is_next_node.xpath("./@href").text
+          url_product = "http://catalog.onliner.by/" + is_next_node.xpath("./@href").text
           break
         else 
           url_product = false
