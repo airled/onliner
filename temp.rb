@@ -5,19 +5,19 @@ require 'open-uri'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
-$url_const = "http://catalog.onliner.by"
-html = Nokogiri::HTML(open($url_const))
+Url = "http://catalog.onliner.by"
+html = Nokogiri::HTML(open(Url))
  
 #creating groups in Groups table
 def create_group(group_node)
   name = group_node.text.delete("0-9")
-  Group.create({ name_ru: name })
+  Group.create(name_ru: name)
 end
 
 #creating categories in Categories table
 def create_category(category_node)
   url = category_node.xpath("./a[1]/@href").text
-  name = url.sub($url_const,"").delete('/')
+  name = url.sub(Url,"").delete('/')
   name_ru = category_node.xpath("./a[last()]").text
   is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
   Category.create(name: name, name_ru: name_ru, url: url, is_new: is_new)
@@ -25,7 +25,7 @@ end
 
 #creating products in Products table
 def create_product(product_node)
-  url = $url_const + product_node.xpath("./strong/a/@href").text
+  url = Url + product_node.xpath("./strong/a/@href").text
   name = product_node.xpath("./strong/a").text.delete("\n" " ")
   image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
   Product.create(url: url, name: name, image_url: image_url)
@@ -55,7 +55,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
       #checking if there is a next product page in the same category
       html_product.xpath("//a").map do |is_next_node|
         if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
-          url_product = $url_const + "/" + is_next_node.xpath("./@href").text
+          url_product = Url + "/" + is_next_node.xpath("./@href").text
           break
         else 
           url_product = false
