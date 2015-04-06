@@ -27,7 +27,8 @@ end
 def create_product(product_node)
   url = product_node.xpath("./strong/a/@href")
   name = product_node.xpath("./strong/a").text.delete("\n" " ")
-  Product.create(url: url, name: name)
+  image_url = product_node.xpath("../td[@class='pimage']/a/img/@src")
+  Product.create(url: url, name: name, image_url: image_url)
 end
 
 #getting group and common category nodes
@@ -45,6 +46,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
     url_product_const = 'http://catalog.onliner.by/'
 
     while url_product do
+    
       #searching for the product parameters
       html_product = Nokogiri::HTML(open(url_product))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
