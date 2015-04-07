@@ -2,6 +2,7 @@ require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
+require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 #fetching HTML code

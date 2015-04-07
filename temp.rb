@@ -2,7 +2,7 @@ require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
+#require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
@@ -39,7 +39,7 @@ def check_next(products_page)
   else
     false
   end
-  next_products_page
+  next_products_page_url
 end
 
 #getting group and common category nodes
@@ -60,7 +60,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
         product = create_product(product_node)
         category.add_product(product)
       end
-      products_page_url = check_next(html_product) #rescue binding.pry
+      products_page_url = check_next(html_product)
     end
   end
 end
