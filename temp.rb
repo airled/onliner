@@ -32,18 +32,16 @@ def create_product(product_node)
   Product.create(url: url, name: name, image_url: image_url)
 end
 
-def check_next(html_products)  
-  html_products.xpath("//a").map do |is_next_node|
-    if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
-      next_products_page_url = Url + "/" + is_next_node.xpath("./@href").text
-      break
-    else 
-      next_products_page_url = false
-    end
+def check_next(products_page)
+  check_url = products_page.xpath("//td[@align='right']/strong/a[contains(text(), 'Следующие')]/@href").text
+  next_products_page_url = if check_url != ''
+    Url + "/" + check_url
+  else
+    false
   end
-  next_products_page_url
+  next_products_page
 end
-  
+
 #getting group and common category nodes
 groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
@@ -62,7 +60,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
         product = create_product(product_node)
         category.add_product(product)
       end
-      products_page_url = check_next(html_product) rescue binding.pry
+      products_page_url = check_next(html_product) #rescue binding.pry
     end
   end
 end
