@@ -40,8 +40,8 @@ def check_next(html_products)
     else 
       next_products_page_url = false
     end
-    next_products_page_url
   end
+  next_products_page_url
 end
   
 #getting group and common category nodes
@@ -57,12 +57,12 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
     
     products_page_url = category_node.xpath("./a[1]/@href").text
     while products_page_url do
-      html_product = Nokogiri::HTML(open(products_page_url)) rescue binding.pry
+      html_product = Nokogiri::HTML(open(products_page_url))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
         product = create_product(product_node)
         category.add_product(product)
       end
-      products_page_url = check_next(html_product)
+      products_page_url = check_next(html_product) rescue binding.pry
     end
   end
 end
