@@ -31,8 +31,8 @@ def create_product(product_node)
   Product.create(url: url, name: name, image_url: image_url)
 end
 
-def check_next(html_products)
-  html_products.xpath("//a").map do |is_next_node|
+def check_next(html_product)  
+  html_product.xpath("//a").map do |is_next_node|
     if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
       url_product = Url + "/" + is_next_node.xpath("./@href").text
       break
@@ -53,6 +53,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
   categories_block.xpath("./li/div[@class='i']").map do |category_node|
     category = create_category(category_node)
     group.add_category(category)
+    
     url_product = category_node.xpath("./a[1]/@href").text
     while url_product do
       html_product = Nokogiri::HTML(open(url_product))
@@ -60,7 +61,7 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
         product = create_product(product_node)
         category.add_product(product)
       end
-      url_product = check_next(url_product)
+      url_product = check_next(html_product)
     end
   end
 end
