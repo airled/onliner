@@ -2,6 +2,7 @@ require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
+require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 #fetching HTML code
@@ -31,15 +32,15 @@ def create_product(product_node)
   Product.create(url: url, name: name, image_url: image_url)
 end
 
-def check_next(html_product)  
-  html_product.xpath("//a").map do |is_next_node|
+def check_next(html_products)  
+  html_products.xpath("//a").map do |is_next_node|
     if is_next_node.text.delete(" " "\n" "0-9").include? "Следующиепозиций"
-      url_product = Url + "/" + is_next_node.xpath("./@href").text
+      next_products_page_url = Url + "/" + is_next_node.xpath("./@href").text
       break
     else 
-      url_product = false
+      next_products_page_url = false
     end
-    url_product
+    next_products_page_url
   end
 end
   
@@ -54,14 +55,14 @@ groups.zip(categories_blocks).map do |group_node, categories_block|
     category = create_category(category_node)
     group.add_category(category)
     
-    url_product = category_node.xpath("./a[1]/@href").text
-    while url_product do
-      html_product = Nokogiri::HTML(open(url_product))
+    products_page_url = category_node.xpath("./a[1]/@href").text
+    while products_page_url do
+      html_product = Nokogiri::HTML(open(products_page_url)) rescue binding.pry
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
         product = create_product(product_node)
         category.add_product(product)
       end
-      url_product = check_next(html_product)
+      products_page_url = check_next(html_product)
     end
   end
 end
