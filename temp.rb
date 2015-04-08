@@ -32,35 +32,39 @@ def create_product(product_node)
   Product.create(url: url, name: name, image_url: image_url)
 end
 
+#checking if there is a next product page in the same category
 def check_next(products_page)
-  check_url = products_page.xpath("//td[@align='right']/strong/a[contains(text(), 'Следующие')]/@href").text
-  next_products_page_url = if check_url != ''
-    Url + "/" + check_url
+  xnext = "//td[@align='right']/strong/a[contains(text(), 'Следующие')]/@href"
+  next_url = products_page.xpath(xnext).text
+  next_products_page_url = if next_url != ''
+    Url + "/" + next_url
   else
     false
   end
   next_products_page_url
 end
 
-#getting group and common category nodes
-groups = html.xpath("//h1[@class='cm__h1']")
-categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
-
-#matching category to its group
-groups.zip(categories_blocks).map do |group_node, categories_block|
-  group = create_group(group_node)
-  categories_block.xpath("./li/div[@class='i']").map do |category_node|
-    category = create_category(category_node)
-    group.add_category(category)
-    
-    products_page_url = category_node.xpath("./a[1]/@href").text
-    while products_page_url do
+#WTF method
+def create_category_product(category,category_node)
+  products_page_url = category_node.xpath("./a[1]/@href").text
+  while products_page_url do
       html_product = Nokogiri::HTML(open(products_page_url))
       html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
         product = create_product(product_node)
         category.add_product(product)
       end
       products_page_url = check_next(html_product)
-    end
+  end
+end
+
+groups = html.xpath("//h1[@class='cm__h1']")
+categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
+
+groups.zip(categories_blocks).map do |group_node, categories_block|
+  group = create_group(group_node)
+  categories_block.xpath("./li/div[@class='i']").map do |category_node|
+    category = create_category(category_node)
+    group.add_category(category)
+    create_category_product(category,category_node)
   end
 end
