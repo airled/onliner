@@ -5,10 +5,6 @@ require 'open-uri'
 #require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
-#fetching HTML code
-Url = "http://catalog.onliner.by"
-html = Nokogiri::HTML(open(Url))
- 
 #creating groups in Groups table
 def create_group(group_node)
   name = group_node.text.delete("0-9")
@@ -56,6 +52,10 @@ def create_category_products(category,category_node)
       products_page_url = check_next(html_product)
   end
 end
+
+#fetching HTML code
+Url = "http://catalog.onliner.by"
+html = Nokogiri::HTML(open(Url))
 
 #fetching groups and categories root nodes
 groups = html.xpath("//h1[@class='cm__h1']")
