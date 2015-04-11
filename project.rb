@@ -61,7 +61,7 @@ end
 groups = html.xpath("//h1[@class='cm__h1']")
 categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
 
-#matching products to theirs categories and matching categories to theirs groups
+#matching products to their categories and matching categories to their groups
 groups.zip(categories_blocks).map do |group_node, categories_block|
   group = create_group(group_node)
   categories_block.xpath("./li/div[@class='i']").map do |category_node|
