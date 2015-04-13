@@ -8,6 +8,25 @@ require 'open-uri'
 class Parser
 
   Url = "http://catalog.onliner.by"
+  def self.run
+    #fetching HTML code
+    html = Nokogiri::HTML(open(Url))
+
+    #fetching groups and categories root nodes
+    groups = html.xpath("//h1[@class='cm__h1']")
+    categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
+
+    #matching products to their categories and matching categories to their groups
+    groups.zip(categories_blocks).map do |group_node, categories_block|
+      group = create_group(group_node)
+      categories_block.xpath("./li/div[@class='i']").map do |category_node|
+        category = create_category(category_node)
+        group.add_category(category)
+        create_category_products(category,category_node)
+      end
+    end
+  end
+  
   #creating groups in Groups table
   def create_group(group_node)
     name = group_node.text.delete("0-9")
@@ -55,26 +74,7 @@ class Parser
         products_page_url = check_next(html_product)
     end
   end
-
-  def run
-    #fetching HTML code
-    html = Nokogiri::HTML(open(Url))
-
-    #fetching groups and categories root nodes
-    groups = html.xpath("//h1[@class='cm__h1']")
-    categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
-
-    #matching products to their categories and matching categories to their groups
-    groups.zip(categories_blocks).map do |group_node, categories_block|
-      group = create_group(group_node)
-      categories_block.xpath("./li/div[@class='i']").map do |category_node|
-        category = create_category(category_node)
-        group.add_category(category)
-        create_category_products(category,category_node)
-      end
-    end
-  end
-  
+ 
 end
 
-Parser.new.run
+Parser.run
