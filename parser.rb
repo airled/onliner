@@ -68,12 +68,12 @@ class Parser
   def create_category_products(category,category_node)
     products_page_url = category_node.xpath("./a[1]/@href").text
     while products_page_url
-        html_product = Nokogiri::HTML(open(products_page_url))
-        html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
-          product = create_product(product_node)
-          category.add_product(product)
-        end
-        products_page_url = check_next(html_product)
+      html_product = Nokogiri::HTML(open(products_page_url))
+      html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
+        product = create_product(product_node)
+        category.add_product(product)
+      end
+      products_page_url = check_next(html_product)
     end
   end
  
