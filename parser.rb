@@ -13,6 +13,7 @@ class Parser
   end
 
   def run
+	print 'Working...'
 	t1=Time.new
     #fetching HTML code
     html = Nokogiri::HTML(open(Url))
@@ -29,7 +30,7 @@ class Parser
       end
     end
 	t2=Time.new
-	results(t2-t1)
+	results(t2,t1)
   end
 
   private
