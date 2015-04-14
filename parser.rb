@@ -13,6 +13,7 @@ class Parser
   end
 
   def run
+	t1=Time.new
     #fetching HTML code
     html = Nokogiri::HTML(open(Url))
     #fetching groups and categories root nodes
@@ -27,6 +28,8 @@ class Parser
         create_category_products(category,category_node)
       end
     end
+	t2=Time.new
+	results(t2-t1)
   end
 
   private
@@ -78,6 +81,23 @@ class Parser
       products_page_url = check_next(html_product)
     end
   end
+
+	def results(time2,time1)
+  hours=time2.hour-time1.hour
+  if time2.min-time1.min > 0
+    mins = time2.min-time1.min
+  else
+    mins=time2.min-time1.min+60
+    hours=hours-1
+  end
+  if time2.sec-time1.sec > 0
+    secs = time2.sec-time1.sec
+  else
+    secs=time2.sec-time1.sec+60
+    mins=mins-1
+  end
+  puts "#{hours}:#{mins}:#{secs}"
+end
  
 end
 
