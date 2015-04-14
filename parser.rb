@@ -79,4 +79,4 @@ class Parser
  
 end
 
-Parser.new.run
+Parser.run
