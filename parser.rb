@@ -1,4 +1,3 @@
-require './init_db'
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
@@ -68,7 +67,7 @@ class Parser
   #creating all products of a category
   def create_category_products(category,category_node)
     products_page_url = category_node.xpath("./a[1]/@href").text
-    while products_page_url do
+    while products_page_url
         html_product = Nokogiri::HTML(open(products_page_url))
         html_product.xpath("//tr/td[@class='pdescr']").map do |product_node|
           product = create_product(product_node)
