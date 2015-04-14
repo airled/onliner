@@ -11,7 +11,7 @@ class Parser
   def self.run
     new.run
   end
-  
+
   def run
     #fetching HTML code
     html = Nokogiri::HTML(open(Url))
@@ -28,7 +28,9 @@ class Parser
       end
     end
   end
-  
+
+  private
+
   #creating groups in Groups table
   def create_group(group_node)
     name = group_node.text.delete("0-9")
