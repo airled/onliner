@@ -82,7 +82,8 @@ class Parser
       products_page_url = check_next(html_product)
     end
   end
-
+  
+  #calculating parsing time and amount of fetched objects
   def results(time2,time1)
     hours = time2.hour - time1.hour
     if time2.min - time1.min > 0
@@ -97,7 +98,11 @@ class Parser
       secs = time2.sec - time1.sec + 60
       mins = mins - 1
     end
-    puts "Done. Got #{Group.last.id} groups, #{Category.last.id} categories, #{Product.last.id} products in #{hours}:#{mins}:#{secs}"
+    puts "Done in #{hours}:#{mins}:#{secs}"
+    puts "Got:"
+    puts "#{Group.count} groups"
+    puts "#{Category.count} categories"
+    puts "#{Product.count} products"
   end
  
 end
