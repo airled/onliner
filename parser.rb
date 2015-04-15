@@ -83,7 +83,7 @@ class Parser
     end
   end
 
-	def results(time2,time1)
+  def results(time2,time1)
     hours = time2.hour - time1.hour
     if time2.min - time1.min > 0
       mins = time2.min - time1.min
