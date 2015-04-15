@@ -97,7 +97,7 @@ class Parser
       secs = time2.sec - time1.sec + 60
       mins = mins - 1
     end
-    puts "Done in #{hours}:#{mins}:#{secs}"
+    puts "Done. Got #{Group.last.id} groups, #{Category.last.id} categories, #{Product.last.id} products in #{hours}:#{mins}:#{secs}"
   end
  
 end
