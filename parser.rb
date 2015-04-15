@@ -99,10 +99,7 @@ class Parser
       mins = mins - 1
     end
     puts "Done in #{hours}:#{mins}:#{secs}"
-    puts "Got:"
-    puts "#{Group.count} groups"
-    puts "#{Category.count} categories"
-    puts "#{Product.count} products"
+    puts "Got: #{Group.count} groups, #{Category.count} categories, #{Product.count} products"
   end
  
 end
