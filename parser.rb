@@ -1,3 +1,6 @@
+#Onliner's catalog parser. Fetches groups of categories, categories
+#and products of each category and inserts them all
+#into the appropriate MySQL table.
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
@@ -17,14 +20,14 @@ class Parser
 
   #parser's work script
   def run
-    puts "Fetching start page HTML..."
     start_time=Time.new
     #fetching HTML code
+    puts "Fetching start page HTML..."
     html = Nokogiri::HTML(open(Url))
+    puts 'Fetched.'
     #fetching groups and categories root nodes
     groups = html.xpath("//h1[@class='cm__h1']")
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
-    puts 'Fetched.'
     puts 'Parsing...'
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
@@ -90,18 +93,18 @@ class Parser
   end
   
   #calculating parsing time and amount of fetched objects
-  def results(time2,time1)
-    hours = time2.hour - time1.hour
-    if time2.min - time1.min > 0
-      mins = time2.min - time1.min
+  def results(stop,start)
+    hours = stop.hour - start.hour
+    if stop.min - start.min > 0
+      mins = stop.min - start.min
     else
-      mins = time2.min - time1.min + 60
+      mins = stop.min - start.min + 60
       hours = hours - 1
     end
-    if time2.sec-time1.sec > 0
-      secs = time2.sec - time1.sec
+    if stop.sec - start.sec > 0
+      secs = stop.sec - start.sec
     else
-      secs = time2.sec - time1.sec + 60
+      secs = stop.sec - start.sec + 60
       mins = mins - 1
     end
     puts "Done in #{hours}:#{mins}:#{secs}"
