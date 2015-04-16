@@ -10,13 +10,13 @@ require 'singleton'
 
 class Parser
   include Singleton
-
-  #Onliner parser works with onliner only ;)
-  Url = "http://catalog.onliner.by"
   
   def self.run
     new.run
   end
+
+  #Onliner parser works with onliner only ;)
+  Url = "http://catalog.onliner.by"
 
   #parser's work script
   def run
