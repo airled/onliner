@@ -39,6 +39,7 @@ class Parser
       end
     end
     stop_time=Time.new
+    #echo result information
     results(stop_time,start_time)
   end
 
