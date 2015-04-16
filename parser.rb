@@ -1,25 +1,31 @@
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
+require 'singleton'
 #require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 class Parser
+  include Singleton
 
+  #Onliner parser works with onliner only ;)
   Url = "http://catalog.onliner.by"
   
   def self.run
     new.run
   end
 
+  #parser's work script
   def run
-    puts 'Parsing...'
+    puts "Fetching start page HTML..."
     start_time=Time.new
     #fetching HTML code
     html = Nokogiri::HTML(open(Url))
     #fetching groups and categories root nodes
     groups = html.xpath("//h1[@class='cm__h1']")
     categories_blocks = html.xpath("//ul[@class='b-catalogitems']")
+    puts 'Fetched.'
+    puts 'Parsing...'
     #matching products to their categories and categories to their groups
     groups.zip(categories_blocks).map do |group_node, categories_block|
       group = create_group(group_node)
