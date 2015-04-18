@@ -15,7 +15,7 @@ class Parser
     new.run
   end
 
-  #Onliner parser works with onliner only ;)
+  #Onliner's catalog URL
   Url = "http://catalog.onliner.by"
 
   #parser's work script
