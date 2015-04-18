@@ -9,6 +9,7 @@ require 'singleton'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 class Parser
+
   include Singleton
   
   def self.run
