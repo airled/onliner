@@ -4,20 +4,22 @@
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
-require 'singleton'
 #require 'pry'
 #require 'logger'; DB.loggers << Logger.new($stdout)
 
 class Parser
 
-  include Singleton
-  
-  def self.run
-    new.run
-  end
-
   #Onliner's catalog URL
   Url = "http://catalog.onliner.by"
+
+  def initialize
+  end
+
+  @@instance = Parser.new
+
+  def self.instance
+    @@instance
+  end
 
   #parser's work script
   def run
@@ -43,6 +45,8 @@ class Parser
     #echo result information
     results(stop_time,start_time)
   end
+
+  private_class_method :new
 
   private
 
@@ -115,4 +119,4 @@ class Parser
  
 end
 
-Parser.run
+Parser.instance.run
