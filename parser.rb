@@ -1,6 +1,6 @@
 #Onliner's catalog parser. Fetches groups of categories, categories
-#and products of each category and inserts them all
-#into the appropriate MySQL table.
+#and products of each category and inserts them all into the 
+#appropriate MySQL table.
 require './init_models'
 require 'nokogiri'
 require 'open-uri'
