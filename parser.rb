@@ -8,7 +8,7 @@ require 'open-uri'
 class Parser
 
   #Onliner's catalog URL
-  Url = "http://catalog.onliner.by"
+  Url = 'http://catalog.onliner.by'
 
   def initialize
   end
@@ -23,7 +23,7 @@ class Parser
   def run
     start_time=Time.new
     #fetching HTML code
-    puts "Fetching start page HTML..."
+    puts 'Fetching start page HTML...'
     html = Nokogiri::HTML(open(Url))
     puts 'Fetched.'
     #fetching groups and categories root nodes
@@ -57,7 +57,7 @@ class Parser
   #creating categories in Categories table
   def create_category(category_node)
     url = category_node.xpath("./a[1]/@href").text
-    name = url.sub(Url,"").delete('/')
+    name = url.sub(Url,'').delete('/')
     name_ru = category_node.xpath("./a[last()]").text
     is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
     Category.create(name: name, name_ru: name_ru, url: url, is_new: is_new)
@@ -76,7 +76,7 @@ class Parser
     xnext = "//td[@align='right']/strong/a[contains(text(), 'Следующие')]/@href"
     next_url = products_page.xpath(xnext).text
     next_products_page_url = if next_url != ''
-      Url + "/" + next_url
+      Url + '/' + next_url
     else
       false
     end
