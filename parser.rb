@@ -30,7 +30,7 @@ class Parser
       categories_block.xpath("./li/div[@class='i']").map do |category_node|
         category = create_category(category_node)
         group.add_category(category)
-        create_category_products(category,category_node)
+#        create_category_products(category,category_node)
       end
     end
     stop_time=Time.new
@@ -91,18 +91,10 @@ class Parser
   #calculating parsing time and amount of fetched objects
   def results(stop,start)
     hours = stop.hour - start.hour
-    if stop.min - start.min > 0
-      mins = stop.min - start.min
-    else
-      mins = stop.min - start.min + 60
-      hours = hours - 1
-    end
-    if stop.sec - start.sec > 0
-      secs = stop.sec - start.sec
-    else
-      secs = stop.sec - start.sec + 60
-      mins = mins - 1
-    end
+    mins = stop.min - start.min
+    secs = stop.min - start.min
+    mins = mins + 60 && hours = hours - 1 if mins < 0
+    secs = secs + 60 && mins = mins - 1 if secs < 0
     puts "Done in #{hours}:#{mins}:#{secs}"
     puts "Got: #{Group.count} groups, #{Category.count} categories, #{Product.count} products"
   end
