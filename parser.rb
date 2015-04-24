@@ -13,9 +13,6 @@ class Parser
   #Onliner's catalog URL
   URL = 'http://catalog.onliner.by'
 
-  def initialize
-  end
-
   #parser's work script
   def run
     start_time=Time.new
