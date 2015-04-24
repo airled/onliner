@@ -8,7 +8,7 @@ require 'open-uri'
 class Parser
 
   #Onliner's catalog URL
-  Url = 'http://catalog.onliner.by'
+  URL = 'http://catalog.onliner.by'
 
   def initialize
   end
@@ -24,7 +24,7 @@ class Parser
     start_time=Time.new
     #fetching HTML code
     puts 'Fetching start page HTML...'
-    html = Nokogiri::HTML(open(Url))
+    html = Nokogiri::HTML(open(URL))
     puts 'Fetched.'
     #fetching groups and categories root nodes
     groups = html.xpath("//h1[@class='cm__h1']")
@@ -57,7 +57,7 @@ class Parser
   #creating categories in Categories table
   def create_category(category_node)
     url = category_node.xpath("./a[1]/@href").text
-    name = url.sub(Url,'').delete('/')
+    name = url.sub(URL,'').delete('/')
     name_ru = category_node.xpath("./a[last()]").text
     is_new = category_node.xpath("./a[2]/img[@class='img_new']").any?
     Category.create(name: name, name_ru: name_ru, url: url, is_new: is_new)
@@ -65,7 +65,7 @@ class Parser
 
   #creating products in Products table
   def create_product(product_node)
-    url = Url + product_node.xpath("./strong/a/@href").text
+    url = URL + product_node.xpath("./strong/a/@href").text
     name = product_node.xpath("./strong/a").text.delete("\n" " ")
     image_url = product_node.xpath("../td[@class='pimage']/a/img/@src").text
     Product.create(url: url, name: name, image_url: image_url)
@@ -76,7 +76,7 @@ class Parser
     xnext = "//td[@align='right']/strong/a[contains(text(), 'Следующие')]/@href"
     next_url = products_page.xpath(xnext).text
     next_products_page_url = if next_url != ''
-      Url + '/' + next_url
+      URL + '/' + next_url
     else
       false
     end
