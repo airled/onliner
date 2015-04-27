@@ -1,4 +1,5 @@
 require "./init_db"
+require "./parser"
 Sequel.extension :migration
   
 desc "Prints current schema version"
@@ -27,4 +28,8 @@ task :reset do
   Sequel::Migrator.run(DB, "db/migrations", :target => 0)
   Sequel::Migrator.run(DB, "db/migrations")
   Rake::Task['version'].execute
+end
+
+task :parse => :reset do
+  Parser.instance.run
 end

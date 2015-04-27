@@ -101,4 +101,4 @@ class Parser
  
 end
 
-Parser.instance.run
+#Parser.instance.run
