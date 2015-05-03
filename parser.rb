@@ -15,7 +15,7 @@ class Parser
 
   #parser's work script
   def run
-    start_time=Time.new
+    start_time = Time.new
     #fetching HTML code
     puts 'Fetching start page HTML...'
     html = Nokogiri::HTML(open(URL))
@@ -33,7 +33,7 @@ class Parser
         create_category_products(category,category_node)
       end
     end
-    stop_time=Time.new
+    stop_time = Time.new
     #echo result information
     results(stop_time,start_time)
   end
@@ -42,8 +42,8 @@ class Parser
 
   #creating groups in Groups table
   def create_group(group_node)
-    name = group_node.text.delete("0-9")
-    Group.create(name_ru: name)
+    name_ru = group_node.text.delete("0-9")
+    Group.create(name_ru: name_ru)
   end
 
   #creating categories in Categories table
