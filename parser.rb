@@ -69,9 +69,7 @@ class Parser
     next_url = products_page.xpath(xnext).text
     next_products_page_url = if next_url != ''
       URL + '/' + next_url
-    else
-      false
-    end
+    end || false
     next_products_page_url
   end
 
